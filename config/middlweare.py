@@ -1,4 +1,5 @@
 from django.utils.deprecation import MiddlewareMixin
+from django.core.cache import DEFAULT_CACHE_ALIAS, caches
 from django.http import Http404
 from config.settings import CACHE_URLS
 
