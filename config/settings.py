@@ -92,7 +92,7 @@ CACHES = {
     }
 }
 
-CACHE_URLS = ['127.0.0.1:8000/api/v1/test/60*60', ]
+CACHE_URLS = ['/api/v1/test/60/', ]
 
 
 # Password validation

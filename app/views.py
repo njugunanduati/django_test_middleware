@@ -1,21 +1,17 @@
 import json
 from django.http import JsonResponse
-from django.core.cache import cache
 from app.utils import get_random_digits
+from config.middlweare import CacheMiddleware
 
 
 def get_api(request, **kwargs):
-    rand_key = int(get_random_digits(7))
     duration = kwargs['duration']
-    cache_key = '{}_my_key_{}'.format(rand_key, duration)
-    cache_time = int(duration) * int(duration)
-    data = cache.get(cache_key)
-    cache.set(cache_key, data, cache_time)
+    middleware = CacheMiddleware()
     try:
-        if cache:
-            status_code = 200
-            result = {"status": status_code, "message": "the api is being cached for {} minutes".format(cache_time)}
-    except:
+        cache = middleware.process_request(request, duration)
+        status_code = 200
+        result = {"status": status_code, "message": "the api is being cached"}
+    except Exception as e:
         status_code = 404
-        result = {"status": status_code, "message": "Error!"}
+        result = {"status": status_code, "message": str(e)}
     return JsonResponse(result)
